@@ -16,17 +16,26 @@ fn main() {
 
         io::stdin().read_line(&mut guess).expect("Read line error");
 
-        let guess: u32 = guess.trim().parse().expect("Not a number");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Not a number");
+                continue;
+            }
+        };
         println!("Your guess {}", guess);
 
-        match secret.cmp(&guess) {
+        match guess.cmp(&secret) {
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => println!("Great job's, you win!")
+            Ordering::Equal => {
+                println!("Great job's, you win!");
+                break;
+            }
         }
 
         turn = turn + 1;
     }
 
-    println!("You loose, game over!");
+    println!("Game over!");
 }
